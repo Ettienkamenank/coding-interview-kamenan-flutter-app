@@ -17,6 +17,4 @@ void main() async {
       child: const CodingInterview(),
     ),
   );
-
-  // runApp(const LungCash());
 }

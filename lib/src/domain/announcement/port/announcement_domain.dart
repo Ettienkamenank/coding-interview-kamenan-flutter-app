@@ -27,13 +27,13 @@ abstract class CreateAnnouncementImpl {
 
 /// Report Announcement
 abstract class IReportAnnouncement {
-  Future<Either<Failure, ApiSuccess<bool>>> createAnnouncement({
+  Future<Either<Failure, ApiSuccess<bool>>> reportAnnouncement({
     required DtoActionOnAnnouncement actionOnAnnouncement,
   });
 }
 
 abstract class ReportAnnouncementImpl {
-  Future<Either<Failure, ApiSuccess<bool>>> createAnnouncementImpl({
+  Future<Either<Failure, ApiSuccess<bool>>> reportAnnouncementImpl({
     required DtoActionOnAnnouncement actionOnAnnouncement,
   });
 }
