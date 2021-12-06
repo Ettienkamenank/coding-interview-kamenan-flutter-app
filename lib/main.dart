@@ -1,7 +1,10 @@
 import 'package:coding_interview_flutter_app/src/app/core/providers/authentication/register/register_cubit.dart';
 import 'package:coding_interview_flutter_app/src/app/core/providers/authentication/sign_in/sign_in_cubit.dart';
+import 'package:coding_interview_flutter_app/src/app/core/providers/home/home_cubit.dart';
 import 'package:coding_interview_flutter_app/src/app/core/providers/splash/splash_cubit.dart';
 import 'package:coding_interview_flutter_app/src/coding_interview.dart';
+import 'package:coding_interview_flutter_app/src/domain/announcement/manager/announcement_manager.dart';
+import 'package:coding_interview_flutter_app/src/domain/announcement/port/announcement_domain.dart';
 import 'package:coding_interview_flutter_app/src/domain/user/manager/user_manager.dart';
 import 'package:coding_interview_flutter_app/src/domain/user/port/user_domain.dart';
 import 'package:coding_interview_flutter_app/src/infrastructure/repositories/activity_area_repository.dart';
@@ -33,6 +36,10 @@ void main() async {
   IRegisterUser registerUser =
       RegisterUserUseCase(repository: registerUserImpl);
 
+  GetAllAnnouncementsImpl getAllAnnouncementsImpl = announcementRepository;
+  IGetAllAnnouncements getAllAnnouncements =
+      GetAllAnnouncementsUseCase(repository: getAllAnnouncementsImpl);
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -43,6 +50,12 @@ void main() async {
         BlocProvider(
           create: (context) => RegisterCubit(
             registerUser: registerUser,
+            prefs: prefs,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => HomeCubit(
+            getAllAnnouncements: getAllAnnouncements,
             prefs: prefs,
           ),
         ),

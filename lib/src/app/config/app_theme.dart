@@ -30,12 +30,12 @@ IconThemeData iconThemeData() {
 
 AppBarTheme appBarTheme() {
   return const AppBarTheme(
-    color: AppColors.secondary,
+    color: AppColors.primary,
     elevation: 10,
     systemOverlayStyle: SystemUiOverlayStyle.light,
     iconTheme: IconThemeData(color: AppColors.secondary),
     titleTextStyle: TextStyle(
-      color: AppColors.primary,
+      color: AppColors.secondary,
       fontSize: 18,
       fontWeight: FontWeight.bold,
     ),

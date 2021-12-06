@@ -112,7 +112,7 @@ class AnnouncementRepository
     required String sessionToken,
   }) async {
     if (announcementsCached.isEmpty) {
-      Uri url = Uri.parse('$baseUrl/all-activity-areas');
+      Uri url = Uri.parse('$baseUrl/all-announcements');
 
       try {
         final response = await client.get(

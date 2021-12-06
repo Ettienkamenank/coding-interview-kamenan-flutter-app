@@ -10,6 +10,7 @@ const _announcementActivityArea = 'activityArea';
 class Announcement {
   int id = -1;
   String title = '', description = '';
+  bool isReported = false;
   late User customer;
   late ActivityArea activityArea;
 

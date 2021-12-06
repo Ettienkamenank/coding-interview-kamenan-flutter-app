@@ -44,6 +44,7 @@ class SignInCubit extends Cubit<SignInState> {
       },
       (data) {
         prefs.setString(prefsUser, json.encode(data));
+        prefs.setString(prefsSessionToken, data.sessionToken);
         prefs.setString(prefsUserIdentifier, data.username);
         return SignInSuccess();
       },
