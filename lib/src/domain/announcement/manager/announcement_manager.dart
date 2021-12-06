@@ -10,9 +10,12 @@ class GetAllAnnouncementsUseCase implements IGetAllAnnouncements {
   final GetAllAnnouncementsImpl repository;
 
   @override
-  Future<Either<Failure, List<Announcement>>> getAllAnnouncements() async {
-    return await repository.getAllAnnouncementsImpl();
+  Future<Either<Failure, List<Announcement>>> getAllAnnouncements({
+    required String sessionToken,
+  }) async {
+    return await repository.getAllAnnouncementsImpl(sessionToken: sessionToken);
   }
+
 }
 
 class CreateAnnouncementUseCase implements ICreateAnnouncement {
@@ -22,9 +25,11 @@ class CreateAnnouncementUseCase implements ICreateAnnouncement {
 
   @override
   Future<Either<Failure, ApiSuccess<bool>>> createAnnouncement({
+    required String sessionToken,
     required DtoAnnouncement dtoAnnouncement,
   }) async {
     return await repository.createAnnouncementImpl(
+      sessionToken: sessionToken,
       dtoAnnouncement: dtoAnnouncement,
     );
   }
@@ -37,9 +42,11 @@ class ReportAnnouncementUseCase implements IReportAnnouncement {
 
   @override
   Future<Either<Failure, ApiSuccess<bool>>> reportAnnouncement({
+    required String sessionToken,
     required DtoActionOnAnnouncement actionOnAnnouncement,
   }) async {
     return await repository.reportAnnouncementImpl(
+      sessionToken: sessionToken,
       actionOnAnnouncement: actionOnAnnouncement,
     );
   }
@@ -52,9 +59,11 @@ class CommentAnnouncementUseCase implements ICommentAnnouncement {
 
   @override
   Future<Either<Failure, ApiSuccess<bool>>> commentAnnouncement({
+    required String sessionToken,
     required DtoActionOnAnnouncement actionOnAnnouncement,
   }) async {
     return await repository.commentAnnouncementImpl(
+      sessionToken: sessionToken,
       actionOnAnnouncement: actionOnAnnouncement,
     );
   }

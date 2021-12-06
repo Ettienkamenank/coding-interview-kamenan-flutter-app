@@ -7,6 +7,7 @@ import 'package:coding_interview_flutter_app/src/infrastructure/config/request_i
 import 'package:coding_interview_flutter_app/src/shared/errors/failures.dart';
 import 'package:coding_interview_flutter_app/src/shared/errors/success.dart';
 import 'package:dartz/dartz.dart';
+import 'package:http/http.dart' as http;
 
 class AnnouncementRepository
     implements
@@ -14,15 +15,16 @@ class AnnouncementRepository
         CreateAnnouncementImpl,
         ReportAnnouncementImpl,
         CommentAnnouncementImpl {
-  AnnouncementRepository({required this.httpClient});
+  AnnouncementRepository({required this.client});
 
-  final HttpClient httpClient;
+  final http.Client client;
   String baseUrl = ApiEndpoint.announcementEndpoint;
 
   List<Announcement> announcementsCached = [];
 
   @override
   Future<Either<Failure, ApiSuccess<bool>>> commentAnnouncementImpl({
+    required String sessionToken,
     required DtoActionOnAnnouncement actionOnAnnouncement,
   }) async {
     var requestBody = json.encode({
@@ -33,7 +35,11 @@ class AnnouncementRepository
     Uri url = Uri.parse('$baseUrl/comment');
 
     try {
-      final response = await httpClient.post(url, body: requestBody);
+      final response = await client.post(
+        url,
+        headers: appHttpHeaders(sessionToken: sessionToken),
+        body: requestBody,
+      );
 
       switch (response.statusCode) {
         case 200:
@@ -60,6 +66,7 @@ class AnnouncementRepository
 
   @override
   Future<Either<Failure, ApiSuccess<bool>>> createAnnouncementImpl({
+    required String sessionToken,
     required DtoAnnouncement dtoAnnouncement,
   }) async {
     var requestBody = json.encode({
@@ -71,7 +78,11 @@ class AnnouncementRepository
     Uri url = Uri.parse('$baseUrl/create');
 
     try {
-      final response = await httpClient.post(url, body: requestBody);
+      final response = await client.post(
+        url,
+        headers: appHttpHeaders(sessionToken: sessionToken),
+        body: requestBody,
+      );
 
       switch (response.statusCode) {
         case 200:
@@ -97,12 +108,17 @@ class AnnouncementRepository
   }
 
   @override
-  Future<Either<Failure, List<Announcement>>> getAllAnnouncementsImpl() async {
+  Future<Either<Failure, List<Announcement>>> getAllAnnouncementsImpl({
+    required String sessionToken,
+  }) async {
     if (announcementsCached.isEmpty) {
       Uri url = Uri.parse('$baseUrl/all-activity-areas');
 
       try {
-        final response = await httpClient.get(url);
+        final response = await client.get(
+          url,
+          headers: appHttpHeaders(sessionToken: sessionToken),
+        );
 
         switch (response.statusCode) {
           case 200:
@@ -146,6 +162,7 @@ class AnnouncementRepository
 
   @override
   Future<Either<Failure, ApiSuccess<bool>>> reportAnnouncementImpl({
+    required String sessionToken,
     required DtoActionOnAnnouncement actionOnAnnouncement,
   }) async {
     var requestBody = json.encode({
@@ -156,7 +173,11 @@ class AnnouncementRepository
     Uri url = Uri.parse('$baseUrl/report');
 
     try {
-      final response = await httpClient.post(url, body: requestBody);
+      final response = await client.post(
+        url,
+        headers: appHttpHeaders(sessionToken: sessionToken),
+        body: requestBody,
+      );
 
       switch (response.statusCode) {
         case 200:

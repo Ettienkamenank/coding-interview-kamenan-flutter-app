@@ -9,7 +9,9 @@ class GetAllActivityAreasUseCase implements IGetAllActivityAreas {
   final GetAllActivityAreasImpl repository;
 
   @override
-  Future<Either<Failure, List<ActivityArea>>> getAllActivityAreas() async {
-    return await repository.getAllActivityAreasImpl();
+  Future<Either<Failure, List<ActivityArea>>> getAllActivityAreas({
+    required String sessionToken,
+  }) async {
+    return await repository.getAllActivityAreasImpl(sessionToken: sessionToken);
   }
 }

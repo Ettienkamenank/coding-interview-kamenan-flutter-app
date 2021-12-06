@@ -33,9 +33,13 @@ abstract class SignInImpl {
 
 /// Logout
 abstract class ILogout {
-  Future<Either<Failure, ApiSuccess<bool>>> logout();
+  Future<Either<Failure, ApiSuccess<bool>>> logout({
+    required String sessionToken,
+  });
 }
 
 abstract class LogoutImpl {
-  Future<Either<Failure, ApiSuccess<bool>>> logoutImpl();
+  Future<Either<Failure, ApiSuccess<bool>>> logoutImpl({
+    required String sessionToken,
+  });
 }

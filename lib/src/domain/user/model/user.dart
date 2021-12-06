@@ -65,5 +65,14 @@ class User {
 }
 
 class DtoUser {
-  late String firstname, lastname, username, email, password, phoneNumber;
+  final String firstname, lastname, username, email, password, phoneNumber;
+
+  DtoUser({
+    required this.firstname,
+    required this.lastname,
+    required this.username,
+    required this.email,
+    required this.password,
+    required this.phoneNumber,
+  });
 }

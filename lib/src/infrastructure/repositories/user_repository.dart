@@ -7,25 +7,27 @@ import 'package:coding_interview_flutter_app/src/infrastructure/config/request_i
 import 'package:coding_interview_flutter_app/src/shared/errors/failures.dart';
 import 'package:coding_interview_flutter_app/src/shared/errors/success.dart';
 import 'package:dartz/dartz.dart';
+import 'package:http/http.dart' as http;
 
 class UserRepository implements RegisterUserImpl, SignInImpl, LogoutImpl {
-  UserRepository({
-    required this.unauthenticatedHttpClient,
-    required this.httpClient,
-  });
+  UserRepository({required this.client});
 
-  final UnauthenticatedHttpClient unauthenticatedHttpClient;
-  final HttpClient httpClient;
+  final http.Client client;
 
   String baseUrl = ApiEndpoint.authenticationEndpoint;
   String secureBaseUrl = ApiEndpoint.userEndpoint;
 
   @override
-  Future<Either<Failure, ApiSuccess<bool>>> logoutImpl() async {
+  Future<Either<Failure, ApiSuccess<bool>>> logoutImpl({
+    required String sessionToken,
+  }) async {
     Uri url = Uri.parse('$secureBaseUrl/logout');
 
     try {
-      final response = await httpClient.post(url);
+      final response = await client.post(
+        url,
+        headers: appHttpHeaders(sessionToken: sessionToken),
+      );
 
       switch (response.statusCode) {
         case 200:
@@ -76,8 +78,9 @@ class UserRepository implements RegisterUserImpl, SignInImpl, LogoutImpl {
     Uri url = Uri.parse('$baseUrl/create');
 
     try {
-      final response = await unauthenticatedHttpClient.post(
+      final response = await client.post(
         url,
+        headers: appHttpHeaders(sessionToken: null),
         body: requestBody,
       );
 
@@ -115,7 +118,10 @@ class UserRepository implements RegisterUserImpl, SignInImpl, LogoutImpl {
     Uri url = Uri.parse('$baseUrl/authenticate?$queryString');
 
     try {
-      final response = await unauthenticatedHttpClient.post(url);
+      final response = await client.post(
+        url,
+        headers: appHttpHeaders(sessionToken: null),
+      );
 
       switch (response.statusCode) {
         case 200:

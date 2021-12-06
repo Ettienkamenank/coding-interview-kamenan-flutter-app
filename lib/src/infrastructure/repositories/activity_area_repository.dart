@@ -6,22 +6,28 @@ import 'package:coding_interview_flutter_app/src/infrastructure/config/api_endpo
 import 'package:coding_interview_flutter_app/src/infrastructure/config/request_interceptor.dart';
 import 'package:coding_interview_flutter_app/src/shared/errors/failures.dart';
 import 'package:dartz/dartz.dart';
+import 'package:http/http.dart' as http;
 
 class ActivityAreaRepository implements GetAllActivityAreasImpl {
-  ActivityAreaRepository({required this.httpClient});
+  ActivityAreaRepository({required this.client});
 
-  final HttpClient httpClient;
+  final http.Client client;
   String baseUrl = ApiEndpoint.activityAreaEndpoint;
 
   List<ActivityArea> activityAreasCached = [];
 
   @override
-  Future<Either<Failure, List<ActivityArea>>> getAllActivityAreasImpl() async {
+  Future<Either<Failure, List<ActivityArea>>> getAllActivityAreasImpl({
+    required String sessionToken,
+  }) async {
     if (activityAreasCached.isEmpty) {
       Uri url = Uri.parse('$baseUrl/all-activity-areas');
 
       try {
-        final response = await httpClient.get(url);
+        final response = await client.get(
+          url,
+          headers: appHttpHeaders(sessionToken: sessionToken),
+        );
 
         switch (response.statusCode) {
           case 200:

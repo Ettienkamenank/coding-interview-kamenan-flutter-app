@@ -37,7 +37,9 @@ class LogoutUseCase implements ILogout {
   final LogoutImpl repository;
 
   @override
-  Future<Either<Failure, ApiSuccess<bool>>> logout() async {
-    return await repository.logoutImpl();
+  Future<Either<Failure, ApiSuccess<bool>>> logout({
+    required String sessionToken,
+  }) async {
+    return await repository.logoutImpl(sessionToken: sessionToken);
   }
 }
