@@ -1,8 +1,11 @@
+import 'package:coding_interview_flutter_app/src/app/core/providers/announcement/create_announcement/create_announcement_cubit.dart';
 import 'package:coding_interview_flutter_app/src/app/core/providers/authentication/register/register_cubit.dart';
 import 'package:coding_interview_flutter_app/src/app/core/providers/authentication/sign_in/sign_in_cubit.dart';
 import 'package:coding_interview_flutter_app/src/app/core/providers/home/home_cubit.dart';
 import 'package:coding_interview_flutter_app/src/app/core/providers/splash/splash_cubit.dart';
 import 'package:coding_interview_flutter_app/src/coding_interview.dart';
+import 'package:coding_interview_flutter_app/src/domain/activity_area/manager/activity_area_manager.dart';
+import 'package:coding_interview_flutter_app/src/domain/activity_area/port/activity_area_domain.dart';
 import 'package:coding_interview_flutter_app/src/domain/announcement/manager/announcement_manager.dart';
 import 'package:coding_interview_flutter_app/src/domain/announcement/port/announcement_domain.dart';
 import 'package:coding_interview_flutter_app/src/domain/user/manager/user_manager.dart';
@@ -40,6 +43,14 @@ void main() async {
   IGetAllAnnouncements getAllAnnouncements =
       GetAllAnnouncementsUseCase(repository: getAllAnnouncementsImpl);
 
+  GetAllActivityAreasImpl getAllActivityAreasImpl = activityAreaRepository;
+  IGetAllActivityAreas getAllActivityAreas =
+      GetAllActivityAreasUseCase(repository: getAllActivityAreasImpl);
+
+  CreateAnnouncementImpl createAnnouncementImpl = announcementRepository;
+  ICreateAnnouncement createAnnouncement =
+      CreateAnnouncementUseCase(repository: createAnnouncementImpl);
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -56,6 +67,13 @@ void main() async {
         BlocProvider(
           create: (context) => HomeCubit(
             getAllAnnouncements: getAllAnnouncements,
+            prefs: prefs,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => CreateAnnouncementCubit(
+            getAllActivityAreas: getAllActivityAreas,
+            createAnnouncement: createAnnouncement,
             prefs: prefs,
           ),
         ),

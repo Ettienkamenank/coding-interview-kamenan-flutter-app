@@ -1,6 +1,9 @@
 import 'package:coding_interview_flutter_app/src/app/config/app_colors.dart';
 import 'package:coding_interview_flutter_app/src/app/config/app_screen_size.dart';
+import 'package:coding_interview_flutter_app/src/app/config/routes/app_routing.dart';
 import 'package:coding_interview_flutter_app/src/app/core/providers/home/home_cubit.dart';
+import 'package:coding_interview_flutter_app/src/app/core/screens/announcement/announcement_detail.dart';
+import 'package:coding_interview_flutter_app/src/app/core/screens/announcement/creat_announcement_screen.dart';
 import 'package:coding_interview_flutter_app/src/app/core/widgets/loader.dart';
 import 'package:coding_interview_flutter_app/src/app/core/widgets/modal.dart';
 import 'package:coding_interview_flutter_app/src/domain/announcement/model/announcement.dart';
@@ -16,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -37,6 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
           Icons.arrow_back_ios,
           color: AppColors.primary,
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => AppRouting.changeScreenWithRoute(
+          context: context,
+          screen: const CreateAnnouncementScreen(),
+        ),
+        child: const Icon(Icons.add),
+        backgroundColor: AppColors.primary,
       ),
       body: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
@@ -61,8 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (state is HomeScreenReady) {
             return state.announcements.isNotEmpty
                 ? SizedBox(
-                    height: AppScreenSize.height! * .8,
-                    // color: Colors.yellow,
+                    height: AppScreenSize.height! * .9,
                     child: ListView.builder(
                       itemCount: state.announcements.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -79,14 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
           return Container();
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add), label: 'Ajouter annonce'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home), label: 'Mes annonces'),
-        ],
-      ),
     );
   }
 
@@ -101,7 +102,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SizedBox(
         width: double.infinity,
         child: GestureDetector(
-          onTap: () {},
+          onTap: () => AppRouting.changeScreenWithRoute(
+            context: context,
+            screen: AnnouncementDetailScreen(announcement: announcement),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

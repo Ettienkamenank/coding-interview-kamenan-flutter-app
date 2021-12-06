@@ -63,8 +63,19 @@ class Announcement {
 
 class DtoAnnouncement {
   late String title, description, activityAreaId;
+
+  DtoAnnouncement({
+    required this.title,
+    required this.description,
+    required this.activityAreaId,
+  });
 }
 
 class DtoActionOnAnnouncement {
   late String comment, announcementId;
+
+  DtoActionOnAnnouncement({
+    required this.comment,
+    required this.announcementId,
+  });
 }
