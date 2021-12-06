@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AspectRatio(
-                aspectRatio: 1.4,
+                aspectRatio: getScreenHeight(1.3),
                 child: Container(
                   padding: EdgeInsets.all(getScreenWidth(20)),
                   decoration: BoxDecoration(

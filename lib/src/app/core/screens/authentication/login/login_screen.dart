@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
           AppInputFieldOnContainer(
             key: _passwordKey,
             controller: _passwordController,
+            isPassword: true,
             validator: Validators.emptyField,
             hintText: 'Mot de passe',
             icon: Icons.lock,
