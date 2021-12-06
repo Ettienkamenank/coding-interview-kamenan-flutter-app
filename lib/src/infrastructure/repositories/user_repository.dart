@@ -32,15 +32,12 @@ class UserRepository implements RegisterUserImpl, SignInImpl, LogoutImpl {
           {
             final resJson = json.decode(response.body);
 
-            if (resJson['summary']['isSuccess']) {
-              return const Right(
-                ApiSuccess(message: 'Deconnexion réussie', T: true),
-              );
+            if (resJson['error']) {
+              return Left(ApiFailure(message: resJson['message']));
             } else {
-              List<String> errors =
-                  (resJson['summary']['errors']).values.toList();
-
-              return Left(ApiFailure(message: errors.first.toString()));
+              return Right(
+                ApiSuccess(message: resJson['message'], T: true),
+              );
             }
           }
         default:
@@ -89,15 +86,10 @@ class UserRepository implements RegisterUserImpl, SignInImpl, LogoutImpl {
           {
             final resJson = json.decode(response.body);
 
-            if (resJson['summary']['isSuccess']) {
-              return const Right(
-                ApiSuccess(message: 'Compte créé avec success', T: true),
-              );
+            if (resJson['error']) {
+              return Left(ApiFailure(message: resJson['message']));
             } else {
-              List<String> errors =
-                  (resJson['summary']['errors']).values.toList();
-
-              return Left(ApiFailure(message: errors.first.toString()));
+              return Right(ApiSuccess(message: resJson['message'], T: true));
             }
           }
         default:
@@ -120,7 +112,7 @@ class UserRepository implements RegisterUserImpl, SignInImpl, LogoutImpl {
     var requestParam = {'username': username, 'password': password};
     String queryString = Uri(queryParameters: requestParam).query;
 
-    Uri url = Uri.parse('$baseUrl/sign-in?$queryString');
+    Uri url = Uri.parse('$baseUrl/authenticate?$queryString');
 
     try {
       final response = await unauthenticatedHttpClient.post(url);
@@ -130,14 +122,11 @@ class UserRepository implements RegisterUserImpl, SignInImpl, LogoutImpl {
           {
             final resJson = json.decode(response.body);
 
-            if (resJson['summary']['isSuccess']) {
+            if (resJson['error']) {
+              return Left(ApiFailure(message: resJson['message']));
+            } else {
               User user = User.fromJson(resJson['data']);
               return Right(user);
-            } else {
-              List<String> errors =
-                  (resJson['summary']['errors']).values.toList();
-
-              return Left(ApiFailure(message: errors.first.toString()));
             }
           }
         default:

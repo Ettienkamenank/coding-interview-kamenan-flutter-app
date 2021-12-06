@@ -58,7 +58,7 @@ SnackBar customSnackBar({
         fontSize: 16,
       ),
     ),
-    backgroundColor: color ?? AppColors.primary,
+    backgroundColor: color ?? AppColors.secondary,
     behavior: SnackBarBehavior.floating,
     duration: const Duration(seconds: 3),
     shape: RoundedRectangleBorder(

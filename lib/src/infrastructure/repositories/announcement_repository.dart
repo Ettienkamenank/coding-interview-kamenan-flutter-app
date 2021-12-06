@@ -40,15 +40,10 @@ class AnnouncementRepository
           {
             final resJson = json.decode(response.body);
 
-            if (resJson['summary']['isSuccess']) {
-              return const Right(
-                ApiSuccess(message: 'Commentaire réussi', T: true),
-              );
+            if (resJson['error']) {
+              return Left(ApiFailure(message: resJson['message']));
             } else {
-              List<String> errors =
-                  (resJson['summary']['errors']).values.toList();
-
-              return Left(ApiFailure(message: errors.first.toString()));
+              return Right(ApiSuccess(message: resJson['message'], T: true));
             }
           }
         default:
@@ -83,15 +78,10 @@ class AnnouncementRepository
           {
             final resJson = json.decode(response.body);
 
-            if (resJson['summary']['isSuccess']) {
-              return const Right(
-                ApiSuccess(message: 'Annonce bien créé', T: true),
-              );
+            if (resJson['error']) {
+              return Left(ApiFailure(message: resJson['message']));
             } else {
-              List<String> errors =
-                  (resJson['summary']['errors']).values.toList();
-
-              return Left(ApiFailure(message: errors.first.toString()));
+              return Right(ApiSuccess(message: resJson['message'], T: true));
             }
           }
         default:
@@ -119,7 +109,9 @@ class AnnouncementRepository
             {
               final resJson = json.decode(response.body);
 
-              if (resJson['summary']['isSuccess']) {
+              if (resJson['error']) {
+                return Left(ApiFailure(message: resJson['message']));
+              } else {
                 final values = (resJson['data'] as List);
                 List<Announcement> announcements;
 
@@ -135,11 +127,6 @@ class AnnouncementRepository
 
                   return Right(announcements);
                 }
-              } else {
-                List<String> errors =
-                    (resJson['summary']['errors']).values.toList();
-
-                return Left(ApiFailure(message: errors.first.toString()));
               }
             }
           default:
@@ -176,15 +163,10 @@ class AnnouncementRepository
           {
             final resJson = json.decode(response.body);
 
-            if (resJson['summary']['isSuccess']) {
-              return const Right(
-                ApiSuccess(message: 'Signalement réussi', T: true),
-              );
+            if (resJson['error']) {
+              return Left(ApiFailure(message: resJson['message']));
             } else {
-              List<String> errors =
-                  (resJson['summary']['errors']).values.toList();
-
-              return Left(ApiFailure(message: errors.first.toString()));
+              return Right(ApiSuccess(message: resJson['message'], T: true));
             }
           }
         default:
